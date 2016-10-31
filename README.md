@@ -8,7 +8,7 @@ To install:
 svn checkout https://github.com/Ezandora/Eldritch-Fissures/branches/Release/
 </pre>
 
-To use, type this in the Graphical CLI:
+To use, type this in the Graphical CLI tab:
 <pre>
 EldritchFissuresEvent 50
 </pre>
