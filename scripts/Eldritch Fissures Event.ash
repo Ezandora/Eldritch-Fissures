@@ -1,18 +1,22 @@
 //This script is in the public domain.
-string version = "1.0";
+string version = "1.0.1";
 
 void main()
 {
 	print_html("Eldritch Fissures version " + version);
 	int last_adventures = my_adventures();
-	while (my_adventures() > 0)
+	int limit = 1000;
+	while (my_adventures() > 0 && limit > 0)
 	{
+		limit -= 1;
 		cli_execute("restore hp");
 		cli_execute("mood execute");
 		foreach s in $strings[place.php?whichplace=town&action=town_eincursion,place.php?whichplace=town_wrong&action=townrwong_eincursion,place.php?whichplace=plains&action=plains_eincursion,place.php?whichplace=desertbeach&action=db_eincursion]
 		{
-			while (true) //fissures stay open for a while
+			int limit2 = 100;
+			while (limit2 > 0) //fissures stay open for a while
 			{
+				limit2 -= 1;
 				int last_adventures_2 = my_adventures();
 				visit_url(s);
 				run_combat();
