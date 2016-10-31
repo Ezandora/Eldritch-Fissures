@@ -1,5 +1,5 @@
 //This script is in the public domain.
-string version = "1.0.5";
+string version = "1.0.6";
 
 boolean setting_ignore_tatter_problem = false;
 
@@ -19,7 +19,8 @@ void main(int turns_to_spend)
 			{
 				limit2 -= 1;
 				int last_adventures_2 = my_adventures();
-				cli_execute("restore hp");
+				restore_hp(0);
+				restore_mp(0);
 				cli_execute("mood execute");
 				buffer page_text = visit_url(s);
 				run_combat();
