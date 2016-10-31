@@ -1,7 +1,25 @@
 //This script is in the public domain.
-string version = "1.0.6";
+string version = "1.0.7";
 
 boolean setting_ignore_tatter_problem = false;
+
+
+void preAdventure()
+{
+	restore_hp(0);
+	restore_mp(0);
+	cli_execute("mood execute");
+	string pre_adventure_script = get_property("");
+	if (pre_adventure_script != "betweenBattleScript")
+		cli_execute(pre_adventure_script);
+}
+
+void postAdventure()
+{
+	string post_adventure_script = get_property("");
+	if (post_adventure_script != "afterAdventureScript")
+		cli_execute(post_adventure_script);
+}
 
 void main(int turns_to_spend)
 {
@@ -19,12 +37,12 @@ void main(int turns_to_spend)
 			{
 				limit2 -= 1;
 				int last_adventures_2 = my_adventures();
-				restore_hp(0);
-				restore_mp(0);
-				cli_execute("mood execute");
+				preAdventure();
 				buffer page_text = visit_url(s);
 				run_combat();
-				if (last_adventures_2 == my_adventures())
+				if (page_text.contains_text("Eldritch Tentacle"))
+					postAdventure();
+				else if (last_adventures_2 == my_adventures())
 					break;
 			}
 		}
