@@ -1,5 +1,7 @@
 //This script is in the public domain.
-string version = "1.0.3";
+string version = "1.0.4";
+
+boolean setting_tatter = false;
 
 void main(int turns_to_spend)
 {
@@ -25,7 +27,7 @@ void main(int turns_to_spend)
 					break;
 			}
 		}
-		if (last_adventures == my_adventures())
+		if (last_adventures == my_adventures() && !setting_tatter)
 			break;
 		last_adventures = my_adventures();
 	}
