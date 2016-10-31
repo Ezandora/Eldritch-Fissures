@@ -13,3 +13,10 @@ To use, type this in the Graphical CLI tab:
 EldritchFissuresEvent 50
 </pre>
 Or however many turns you want to spend. In the above case, 50.
+
+
+If you get this error:
+<pre>
+Unable to invoke EldritchFissuresEvent
+</pre>
+Try running "Refresh menu" in the Scripts menu.
