@@ -1,5 +1,5 @@
 //This script is in the public domain.
-string version = "1.0.7";
+string version = "1.0.8";
 
 boolean setting_ignore_tatter_problem = false;
 
@@ -16,8 +16,8 @@ void preAdventure()
 
 void postAdventure()
 {
-	string post_adventure_script = get_property("");
-	if (post_adventure_script != "afterAdventureScript")
+	string post_adventure_script = get_property("afterAdventureScript");
+	if (post_adventure_script != "")
 		cli_execute(post_adventure_script);
 }
 
