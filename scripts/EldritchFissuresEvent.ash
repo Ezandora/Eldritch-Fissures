@@ -9,8 +9,8 @@ void preAdventure()
 	restore_hp(0);
 	restore_mp(0);
 	cli_execute("mood execute");
-	string pre_adventure_script = get_property("");
-	if (pre_adventure_script != "betweenBattleScript")
+	string pre_adventure_script = get_property("betweenBattleScript");
+	if (pre_adventure_script != "")
 		cli_execute(pre_adventure_script);
 }
 
