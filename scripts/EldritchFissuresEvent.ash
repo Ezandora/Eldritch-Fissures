@@ -1,5 +1,5 @@
 //This script is in the public domain.
-string version = "1.0.10";
+string version = "1.0.11";
 
 boolean setting_ignore_tatter_problem = false;
 
@@ -38,33 +38,42 @@ void main(int turns_to_spend)
 	{
 		cli_execute("equip science notebook");
 	}
-	while (my_adventures() > 0 && limit > 0 && my_turncount() < starting_turncount + turns_to_spend)
+	
+	location fissure_location = "an eldritch fissure".to_location();
+	if (fissure_location != $location[none])
 	{
-		limit -= 1;
-		foreach s in $strings[place.php?whichplace=town&action=town_eincursion,place.php?whichplace=town_wrong&action=townrwong_eincursion,place.php?whichplace=plains&action=plains_eincursion,place.php?whichplace=desertbeach&action=db_eincursion]
+		adventure(turns_to_spend, fissure_location);
+	}
+	else
+	{
+		while (my_adventures() > 0 && limit > 0 && my_turncount() < starting_turncount + turns_to_spend)
 		{
-			int limit2 = 100;
-			while (limit2 > 0 && my_turncount() < starting_turncount + turns_to_spend) //fissures stay open for a while
+			limit -= 1;
+			foreach s in $strings[place.php?whichplace=town&action=town_eincursion,place.php?whichplace=town_wrong&action=townrwong_eincursion,place.php?whichplace=plains&action=plains_eincursion,place.php?whichplace=desertbeach&action=db_eincursion]
 			{
-				if ($effect[beaten up].have_effect() > 0)
+				int limit2 = 100;
+				while (limit2 > 0 && my_turncount() < starting_turncount + turns_to_spend) //fissures stay open for a while
 				{
-					abort("beaten up, bad!");
+					if ($effect[beaten up].have_effect() > 0)
+					{
+						abort("beaten up, bad!");
+					}
+					limit2 -= 1;
+					int last_adventures_2 = my_adventures();
+					preAdventure();
+					buffer page_text = visit_url(s);
+					if (should_throw_item && throwing_item.item_amount() > 0 && get_auto_attack() == 0)
+						throw_item(throwing_item);
+					run_combat();
+					if (page_text.contains_text("Eldritch Tentacle"))
+						postAdventure();
+					else if (last_adventures_2 == my_adventures())
+						break;
 				}
-				limit2 -= 1;
-				int last_adventures_2 = my_adventures();
-				preAdventure();
-				buffer page_text = visit_url(s);
-				if (should_throw_item && throwing_item.item_amount() > 0 && get_auto_attack() == 0)
-					throw_item(throwing_item);
-				run_combat();
-				if (page_text.contains_text("Eldritch Tentacle"))
-					postAdventure();
-				else if (last_adventures_2 == my_adventures())
-					break;
 			}
+			if (last_adventures == my_adventures() && !setting_ignore_tatter_problem)
+				break;
+			last_adventures = my_adventures();
 		}
-		if (last_adventures == my_adventures() && !setting_ignore_tatter_problem)
-			break;
-		last_adventures = my_adventures();
 	}
 }
