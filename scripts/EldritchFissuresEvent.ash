@@ -1,5 +1,5 @@
 //This script is in the public domain.
-string version = "1.0.8";
+string version = "1.0.9";
 
 boolean setting_ignore_tatter_problem = false;
 
@@ -23,10 +23,21 @@ void postAdventure()
 
 void main(int turns_to_spend)
 {
+	boolean should_throw_item = false;
+	item throwing_item = $item[flaregun];
+	if (throwing_item.item_amount() > 0 && false) //disabled, because currently unimplemented
+	{
+		boolean yes = user_confirm("Should we throw flareguns? (until the council reward)");
+	}
 	int starting_turncount = my_turncount();
 	print_html("Eldritch Fissures version " + version);
 	int last_adventures = my_adventures();
 	int limit = 1000;
+	item science_notebook = "science notebook".to_item();
+	if (science_notebook != $item[none] && science_notebook.available_amount() > 0)
+	{
+		cli_execute("equip science notebook");
+	}
 	while (my_adventures() > 0 && limit > 0 && my_turncount() < starting_turncount + turns_to_spend)
 	{
 		limit -= 1;
@@ -39,6 +50,8 @@ void main(int turns_to_spend)
 				int last_adventures_2 = my_adventures();
 				preAdventure();
 				buffer page_text = visit_url(s);
+				if (should_throw_item && throwing_item.item_amount() > 0 && get_auto_attack() == 0)
+					throw_item(throwing_item);
 				run_combat();
 				if (page_text.contains_text("Eldritch Tentacle"))
 					postAdventure();
