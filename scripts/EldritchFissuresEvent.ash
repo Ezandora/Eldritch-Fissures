@@ -1,5 +1,5 @@
 //This script is in the public domain.
-string version = "1.0.9";
+string version = "1.0.10";
 
 boolean setting_ignore_tatter_problem = false;
 
@@ -46,6 +46,10 @@ void main(int turns_to_spend)
 			int limit2 = 100;
 			while (limit2 > 0 && my_turncount() < starting_turncount + turns_to_spend) //fissures stay open for a while
 			{
+				if ($effect[beaten up].have_effect() > 0)
+				{
+					abort("beaten up, bad!");
+				}
 				limit2 -= 1;
 				int last_adventures_2 = my_adventures();
 				preAdventure();
