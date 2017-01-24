@@ -1,5 +1,5 @@
 //This script is in the public domain.
-string version = "1.0.14";
+string version = "1.0.15";
 
 boolean setting_ignore_tatter_problem = false;
 
@@ -33,10 +33,11 @@ void main(int turns_to_spend)
 	print_html("Eldritch Fissures version " + version);
 	int last_adventures = my_adventures();
 	int limit = 1000;
-	visit_url("place.php?whichplace=town"); //mafia needs to discover the fissures being there
+	visit_url("place.php?whichplace=town");
 	location fissure_location = "an eldritch fissure".to_location();
-	if (fissure_location != $location[none] && inebriety_limit() - my_inebriety() >= 0) //mafia will not let you adventure in the fissure if you're overdrunk; bug
+	if (fissure_location != $location[none] && inebriety_limit() - my_inebriety() >= 0 && false) //mafia will not let you adventure in the fissure if you're overdrunk; bug
 	{
+		//That area is not available.
 		adventure(turns_to_spend, fissure_location);
 	}
 	else
