@@ -1,8 +1,15 @@
 //This script is in the public domain.
-string version = "1.0.15";
+string version = "1.0.16";
 
 boolean setting_ignore_tatter_problem = false;
 
+
+boolean mafiaIsPastRevision(int revision_number)
+{
+    if (get_revision() <= 0) //get_revision reports zero in certain cases; assume they're on a recent version
+        return true;
+    return (get_revision() >= revision_number);
+}
 
 void preAdventure()
 {
@@ -35,9 +42,8 @@ void main(int turns_to_spend)
 	int limit = 1000;
 	visit_url("place.php?whichplace=town");
 	location fissure_location = "an eldritch fissure".to_location();
-	if (fissure_location != $location[none] && inebriety_limit() - my_inebriety() >= 0 && false) //mafia will not let you adventure in the fissure if you're overdrunk; bug
+	if (fissure_location != $location[none] && inebriety_limit() - my_inebriety() >= 0 && mafiaIsPastRevision(17727)) //mafia will not let you adventure in the fissure if you're overdrunk; bug, unless that was fixed already
 	{
-		//That area is not available.
 		adventure(turns_to_spend, fissure_location);
 	}
 	else
